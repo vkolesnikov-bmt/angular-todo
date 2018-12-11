@@ -1,0 +1,17 @@
+<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+  <input type="text" formControlName="task">
+  <button type="submit">add</button>
+</form><br>
+<button (click)="deleteAll()">Delete all</button>
+<button (click)="changeStatus()">Change status all</button>
+<button (click)="deleteCompleted()">Delete completed</button><br>
+<button (click)="setList(1)">All todos</button>
+<button (click)="setList(2)">Active todos</button>
+<button (click)="setList(3)">Completed todos</button>
+<br>
+<app-todo *ngFor="let todo of todoList" [todo]="todo" (changeStatusTodo)="changeStatusTodo($event)" (deleteTodo)="deleteTodo($event)"></app-todo>
+<p>
+  <mat-button-toggle-group>
+    <mat-button-toggle class="pagButtons" *ngFor="let numb of pagination" (click)="setPage(numb)">{{numb}}</mat-button-toggle>
+  </mat-button-toggle-group>
+</p>
