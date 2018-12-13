@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output, Input, ViewChild, ElementRef, AfterViewChecked} from '@angular/core';
 
-import { Todo } from '../../todo';
+import {Todo} from '../../todo';
 
 @Component({
   selector: 'app-todo',
@@ -17,7 +17,8 @@ export class TodoComponent implements OnInit, AfterViewChecked {
 
   private editTest = true;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
@@ -32,9 +33,11 @@ export class TodoComponent implements OnInit, AfterViewChecked {
     this.todo.status = !this.todo.status;
     this.changeStatusTodo.emit(this.todo);
   }
+
   deleteTD(id: number): void {
     this.deleteTodo.emit(id);
   }
+
   editTodo(edit: boolean, newTask?: string): void {
     if (edit && newTask !== '') {
       this.todo.task = newTask;

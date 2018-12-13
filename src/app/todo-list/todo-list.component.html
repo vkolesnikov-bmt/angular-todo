@@ -9,9 +9,11 @@
 <button (click)="setList(2)">Active todos</button>
 <button (click)="setList(3)">Completed todos</button>
 <br>
-<app-todo *ngFor="let todo of todoList" [todo]="todo" (changeStatusTodo)="changeStatusTodo($event)" (deleteTodo)="deleteTodo($event)"></app-todo>
+<app-todo *ngFor="let todo of todoList" [todo]="todo" (changeStatusTodo)="changeStatusTodo($event)"
+          (deleteTodo)="deleteTodo($event)"></app-todo>
 <p>
   <mat-button-toggle-group>
-    <mat-button-toggle class="pagButtons" *ngFor="let numb of pagination" (click)="setPage(numb)">{{numb}}</mat-button-toggle>
+    <mat-button-toggle class="pagButtons" *ngFor="let numb of pagination" (click)="setPage(numb)">{{numb}}
+    </mat-button-toggle>
   </mat-button-toggle-group>
 </p>

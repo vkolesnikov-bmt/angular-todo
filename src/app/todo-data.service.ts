@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { Todo } from './todo';
+import {Todo} from './todo';
 import {Subject} from 'rxjs';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class TodoDataService {
 
   private genID: number;
 
-  constructor( ) {
+  constructor() {
   }
 
   addTodo(task: string): void {
@@ -36,10 +36,16 @@ export class TodoDataService {
 
   changeStatus(): void {
     const arrFilter = this.todoArr.filter(item => item.status === true);
-    if ( arrFilter.length === this.todoArr.length ) {
-      this.todoArr = this.todoArr.map((item) => {item.status = false; return item; });
+    if (arrFilter.length === this.todoArr.length) {
+      this.todoArr = this.todoArr.map((item) => {
+        item.status = false;
+        return item;
+      });
     } else {
-      this.todoArr = this.todoArr.map((item) => {item.status = true; return item; });
+      this.todoArr = this.todoArr.map((item) => {
+        item.status = true;
+        return item;
+      });
     }
     this.showList();
   }
@@ -57,7 +63,7 @@ export class TodoDataService {
 
   changeStatusTodo(todoEmit: Todo): void {
     let indexTodo: number;
-    indexTodo = this.todoArr.findIndex(todo => todo.id === todoEmit.id );
+    indexTodo = this.todoArr.findIndex(todo => todo.id === todoEmit.id);
     this.todoArr[indexTodo] = todoEmit;
     this.showList();
   }
@@ -93,14 +99,14 @@ export class TodoDataService {
     localStorage.setItem('todoList', JSON.stringify(this.todoArr));
   }
 
-  private sendTodosList( arr: Todo[]): void {
+  private sendTodosList(arr: Todo[]): void {
     this.pagination.length = (Math.ceil(arr.length / 5));
     this.subArr = this.filterSub(arr);
     if (this.subArr.length === 0) {
       this.currentPage = this.pagination.length;
       this.subArr = this.filterSub(arr);
     }
-    if ( this.pagination.length > 0) {
+    if (this.pagination.length > 0) {
       for (let i = 0; i < this.pagination.length; i++) {
         this.pagination[i] = i + 1;
       }
@@ -112,7 +118,7 @@ export class TodoDataService {
   private filterSub(arr: Todo[]): Todo[] {
     return arr.filter(
       (todo, i) => {
-        if (i >= (this.currentPage - 1) * 5 && i <= (this.currentPage - 1 ) * 5 + 4) {
+        if (i >= (this.currentPage - 1) * 5 && i <= (this.currentPage - 1) * 5 + 4) {
           return todo;
         }
       }

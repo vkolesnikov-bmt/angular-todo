@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import {Component, OnInit, DoCheck} from '@angular/core';
 
 
 import {TodoDataService} from '../todo-data.service';
@@ -18,7 +18,8 @@ export class TodoListComponent implements OnInit, DoCheck {
     task: ['']
   });
 
-  constructor( private dataService: TodoDataService, private formBuilder: FormBuilder) {}
+  constructor(private dataService: TodoDataService, private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
     this.dataService.subjectPagination.subscribe(
@@ -65,6 +66,7 @@ export class TodoListComponent implements OnInit, DoCheck {
   setList(indexList: number): void {
     this.dataService.setList(indexList);
   }
+
   setPage(indexPage: number): void {
     this.dataService.setPage(indexPage);
   }

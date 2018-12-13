@@ -1,6 +1,7 @@
-<div >
+<div>
   <input type="checkbox" [checked]="todo.status===true" (change)="changeStatusTD()">
   <label *ngIf="editTest" (click)="editTodo(false)">{{todo.task}}</label>
   <input #editInput type="text" *ngIf="!editTest" (blur)="editTodo(true, editInput.value)" [value]="todo.task">
-  <button (click)="deleteTD(todo.id)">x</button><br>
+  <button (click)="deleteTD(todo.id)">x</button>
+  <br>
 </div>
