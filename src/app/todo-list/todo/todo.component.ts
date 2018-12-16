@@ -10,12 +10,11 @@ import {Todo} from '../../todo';
 export class TodoComponent implements OnInit, AfterViewChecked {
 
   @Input() todo: Todo;
-  @Output() changeStatusTodo = new EventEmitter<Todo>();
+  @Output() editTodo = new EventEmitter<Todo>();
   @Output() deleteTodo = new EventEmitter<number>();
-  @Output() changePagination = new EventEmitter<number>();
   @ViewChild('editInput') editInput: ElementRef;
 
-  private editTest = true;
+  private displayEdit = true;
 
   constructor() {
   }
@@ -24,25 +23,25 @@ export class TodoComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    if (!this.editTest) {
+    if (!this.displayEdit) {
       this.editInput.nativeElement.focus();
     }
   }
 
-  changeStatusTD(): void {
+  public changeStatusTodo(): void {
     this.todo.status = !this.todo.status;
-    this.changeStatusTodo.emit(this.todo);
+    this.editTodo.emit(this.todo);
   }
 
-  deleteTD(id: number): void {
+  public delTodo(id: number): void {
     this.deleteTodo.emit(id);
   }
 
-  editTodo(edit: boolean, newTask?: string): void {
+  public editTaskTodo(edit: boolean, newTask?: string): void {
     if (edit && newTask !== '') {
       this.todo.task = newTask;
     }
-    this.editTest = edit;
-    this.changeStatusTodo.emit(this.todo);
+    this.displayEdit = edit;
+    this.editTodo.emit(this.todo);
   }
 }

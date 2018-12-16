@@ -3,7 +3,8 @@ import {Component, OnInit, DoCheck} from '@angular/core';
 
 import {TodoDataService} from '../todo-data.service';
 import {Todo} from '../todo';
-import {FormBuilder} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-todo-list',
@@ -12,29 +13,28 @@ import {FormBuilder} from '@angular/forms';
 })
 export class TodoListComponent implements OnInit, DoCheck {
 
-  todoList: Todo[];
-  pagination: number[] = [];
-  addForm = this.formBuilder.group({
-    task: ['']
+  addForm = new FormGroup({
+    task: new FormControl('')
   });
 
-  constructor(private dataService: TodoDataService, private formBuilder: FormBuilder) {
+  currentList = 1;
+  currentPage = 1;
+  todoList$: Observable<Todo[]>;
+  pagination$: Observable<number[]>;
+
+  constructor(private dataService: TodoDataService) {
+    this.todoList$ = this.dataService.subjectArr$;
+    this.pagination$ = this.dataService.subjectPagination$;
   }
 
   ngOnInit() {
-    this.dataService.subjectPagination.subscribe(
-      data => this.pagination = data
-    );
-    this.dataService.subjectArr.subscribe(
-      data => this.todoList = data
-    );
-    this.dataService.showList();
   }
 
   ngDoCheck() {
+    this.dataService.showList(this.currentList, this.currentPage);
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     if (!this.addForm.value.task.trim()) {
       return;
     }
@@ -42,32 +42,28 @@ export class TodoListComponent implements OnInit, DoCheck {
     this.addForm.patchValue({task: ''});
   }
 
-
-  deleteAll(): void {
+  public deleteAll(): void {
     this.dataService.deleteAll();
   }
 
-  changeStatus(): void {
+  public changeStatus(): void {
     this.dataService.changeStatus();
   }
 
-  deleteCompleted(): void {
+  public deleteCompleted(): void {
     this.dataService.deleteCompleted();
   }
 
-  deleteTodo(id: number): void {
+  public deleteTodo(id: number): void {
     this.dataService.deleteSingle(id);
   }
 
-  changeStatusTodo(todo: Todo): void {
-    this.dataService.changeStatusTodo(todo);
+  public editTodo(todo: Todo): void {
+    this.dataService.editTodo(todo);
   }
 
-  setList(indexList: number): void {
-    this.dataService.setList(indexList);
-  }
-
-  setPage(indexPage: number): void {
-    this.dataService.setPage(indexPage);
+  public showList(currentList: number = this.currentList, currentPage: number = this.currentPage) {
+    this.currentList = currentList;
+    this.currentPage = currentPage;
   }
 }
