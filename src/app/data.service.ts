@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
 
 import {Todo} from './todo';
 import {Observable, Subject} from 'rxjs';
@@ -8,7 +7,7 @@ import {Observable, Subject} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TodoDataService {
+export class DataService {
 
   public todoArr: Todo[];
 
@@ -21,8 +20,9 @@ export class TodoDataService {
   private todosOnPage = 10;
 
   constructor(private http: HttpClient) {
-
-    this.getTodo();
+    // this.getTodoList().subscribe(data => this.subjectArr.next(data));
+    // this.todoArr = JSON.parse(localStorage.getItem('todoList')) || [];
+    console.log(this.todoArr);
     this.subjectArr$ = this.subjectArr.asObservable();
     this.subjectPagination$ = this.subjectPagination.asObservable();
   }
@@ -33,12 +33,6 @@ export class TodoDataService {
 
   public deleteAll(): void {
     this.todoArr = [];
-  }
-
-
-  getTodo(): void {
-    this.http.get<Todo[]>(`http://localhost:1337/list`)
-      .subscribe(data => {this.todoArr = data; this.subjectArr.next(this.todoArr); });
   }
 
   public changeStatus(): void {
@@ -71,6 +65,8 @@ export class TodoDataService {
     this.todoArr[indexTodo] = todoEmit;
   }
 
+
+
   public showList(currentList: number, currentPage: number): void {
     switch (currentList) {
 
@@ -89,12 +85,13 @@ export class TodoDataService {
       }
     }
 
-   // this.updateStorage();
+    // this.updateStorage();
   }
 
   // private updateStorage(): void {
   //   localStorage.setItem('todoList', JSON.stringify(this.todoArr));
   // }
+
 
   private sendTodosList(arr: Todo[], currentPage: number): void {
     const pagination: number[] = new Array(Math.ceil(arr.length / this.todosOnPage));

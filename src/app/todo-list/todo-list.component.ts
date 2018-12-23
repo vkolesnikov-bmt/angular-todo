@@ -6,6 +6,7 @@ import {Todo} from '../todo';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs';
 
+
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -19,6 +20,8 @@ export class TodoListComponent implements OnInit, DoCheck {
 
   currentList = 1;
   currentPage = 1;
+
+
   todoList$: Observable<Todo[]>;
   pagination$: Observable<number[]>;
 
@@ -28,9 +31,12 @@ export class TodoListComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
+    this.dataService.getTodo();
+    this.dataService.showList(this.currentList, this.currentPage);
   }
 
   ngDoCheck() {
+    this.dataService.getTodo();
     this.dataService.showList(this.currentList, this.currentPage);
   }
 
