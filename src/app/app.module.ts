@@ -9,8 +9,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {TodoListComponent} from './todo-list/todo-list.component';
 import {TodoComponent} from './todo-list/todo/todo.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
+import {LoginComponent} from './login/login.component';
+import {SignupComponent} from './signup/signup.component';
 
 const todoRoutes: Routes = [
   {path: 'login', component: LoginComponent},

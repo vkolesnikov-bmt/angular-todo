@@ -7,7 +7,7 @@ import {Observable, Subject} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class DataService {
+export class TodoDataService {
 
   public todoArr: Todo[];
 

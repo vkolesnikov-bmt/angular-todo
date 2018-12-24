@@ -20,8 +20,9 @@
 <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
   <label>Username:</label>  <input type="text" formControlName="username" required><br>
   <label>Password:</label>  <input type="password" formControlName="password" required><br>
-  <button type="submit" routerLink="/login">Submit</button>
+  <button type="submit">Submit</button>
 </form>
-<div *ngIf="message">{{message.message}}</div>
-<button type="submit" routerLink="/login">Login</button>
+<button type="button" routerLink="/login">Login</button>
+
+<div *ngIf="message">{{message}}</div>
 

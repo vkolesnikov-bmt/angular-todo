@@ -1,14 +1,14 @@
-<h2>Login page</h2>
+<h2>Login-page</h2>
 <form [formGroup]="loginForm" (ngSubmit)="login()">
-  <label>Username:</label>  <input type="text" formControlName="username" required><br>
-  <label>Password:</label>  <input type="password" formControlName="password" required><br>
-  <button type="submit" routerLink="/list">Login</button>
+  <label>Username:</label> <input type="text" formControlName="username" required><br>
+  <label>Password:</label> <input type="password" formControlName="password" required><br>
+  <button type="submit">Login</button>
 </form>
-<button routerLink="/signup">Signup</button>
+<button type="button" routerLink="/signup">Signup</button>
 <div *ngIf="showTS">
   {{messageResponse}}
 </div>
 <!--<button (click)="showT()">ShowList</button>-->
 <!--<div *ngIf="showTS">-->
-  <!--<div *ngFor="let item of testArr$ | async">Task:{{item.task}}<br>Status:{{item.status}}<br>Owner{{item.owner}}</div>-->
+<!--<div *ngFor="let item of testArr$ | async">Task:{{item.task}}<br>Status:{{item.status}}<br>Owner{{item.owner}}</div>-->
 <!--</div>-->

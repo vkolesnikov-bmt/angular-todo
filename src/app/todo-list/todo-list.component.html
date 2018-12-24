@@ -1,5 +1,4 @@
-
-<button (click)="logout()" routerLink="/login">Logout</button>
+<button type="button" (click)="logout()" routerLink="/login">Logout</button>
 <form [formGroup]="addForm" (ngSubmit)="createTodo()">
   <input type="text" formControlName="task">
   <button type="submit">add</button>

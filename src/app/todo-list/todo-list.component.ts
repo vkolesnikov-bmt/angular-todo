@@ -26,7 +26,8 @@ export class TodoListComponent implements OnInit, DoCheck {
   pagination$: Observable<number[]>;
 
   private message: string;
- //  private currentUsername: string;
+
+  //  private currentUsername: string;
   constructor(private dataService: TodoDataService) {
     this.todoList$ = this.dataService.subjectArr$;
     this.pagination$ = this.dataService.subjectPagination$;
@@ -35,7 +36,7 @@ export class TodoListComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.dataService.getTodo(this.dataService.currentUserId);
     this.dataService.showList(this.currentList, this.currentPage);
-   // this.currentUsername = JSON.parse(localStorage.getItem('currentUsername'));
+    // this.currentUsername = JSON.parse(localStorage.getItem('currentUsername'));
   }
 
   ngDoCheck() {
@@ -93,5 +94,9 @@ export class TodoListComponent implements OnInit, DoCheck {
   public showList(currentList: number = this.currentList, currentPage: number = this.currentPage) {
     this.currentList = currentList;
     this.currentPage = currentPage;
+  }
+
+  logout(): void {
+    localStorage.removeItem('currentUserId');
   }
 }
