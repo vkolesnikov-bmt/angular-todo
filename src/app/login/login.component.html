@@ -1,12 +1,14 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<h2>Login page</h2>
+<form [formGroup]="loginForm" (ngSubmit)="login()">
   <label>Username:</label>  <input type="text" formControlName="username" required><br>
   <label>Password:</label>  <input type="password" formControlName="password" required><br>
-  <button type="submit">Login</button>
+  <button type="submit" routerLink="/list">Login</button>
 </form>
 <button routerLink="/signup">Signup</button>
-<div *ngIf="message">{{message.id}}<br>
- </div>
-<button (click)="showT()">ShowList</button>
 <div *ngIf="showTS">
-  <div *ngFor="let item of testArr$ | async">Task:{{item.task}}<br>Status:{{item.status}}<br>Owner{{item.owner}}</div>
+  {{messageResponse}}
 </div>
+<!--<button (click)="showT()">ShowList</button>-->
+<!--<div *ngIf="showTS">-->
+  <!--<div *ngFor="let item of testArr$ | async">Task:{{item.task}}<br>Status:{{item.status}}<br>Owner{{item.owner}}</div>-->
+<!--</div>-->

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {User} from '../user';
 import {SignupService} from '../signup.service';
@@ -14,7 +15,8 @@ import {TodoDataService} from '../todo-data.service';
 })
 export class LoginComponent implements OnInit {
 
-  message: string;
+  userResponse: User;
+  messageResponse: string;
 
   loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
@@ -22,21 +24,29 @@ export class LoginComponent implements OnInit {
   });
   showTS = false;
   testArr$: Observable<Todo[]>;
+
   constructor(private signupService: SignupService, private dataService: TodoDataService) {
     this.testArr$ = this.dataService.subjectArr$;
   }
 
   ngOnInit() {
   }
-  onSubmit() {
-    const user = new User(this.loginForm.value.username, this.loginForm.value.password);
-    this.signupService.loginUser(user).subscribe(data => this.message = data);
-  }
 
-  showT() {
-    this.dataService.getTodo();
-    console.log(this.testArr$);
+  login() {
+    const user = new User(this.loginForm.value.username, this.loginForm.value.password);
+    this.signupService.loginUser(user)
+      .subscribe(data => {
+        this.userResponse = data['user'];
+        this.messageResponse = data['message'];
+      });
+    if (this.userResponse !== undefined) {
+      localStorage.setItem('currentUserId', JSON.stringify(this.userResponse.id));
+      // localStorage.setItem('currentUsername', JSON.stringify(this.userResponse.username));
+    }
     this.showTS = true;
   }
 
+  logout() {
+    localStorage.removeItem('currentUserId');
+  }
 }

@@ -1,4 +1,6 @@
-<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+
+<button (click)="logout()" routerLink="/login">Logout</button>
+<form [formGroup]="addForm" (ngSubmit)="createTodo()">
   <input type="text" formControlName="task">
   <button type="submit">add</button>
 </form><br>
@@ -22,4 +24,4 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 </p>
-<div></div>
+<div>{{message}}</div>

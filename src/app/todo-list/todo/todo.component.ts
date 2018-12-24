@@ -37,6 +37,10 @@ export class TodoComponent implements OnInit, AfterViewChecked {
     this.deleteTodo.emit(id);
   }
 
+  showEdit(): void {
+    this.displayEdit = false;
+  }
+
   public editTaskTodo(edit: boolean, newTask?: string): void {
     if (edit && newTask !== '') {
       this.todo.task = newTask;

@@ -16,10 +16,12 @@
   </mat-form-field><br>
   <button type="submit">singup</button>
 </form>-->
+<h2>Signup page</h2>
 <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
   <label>Username:</label>  <input type="text" formControlName="username" required><br>
   <label>Password:</label>  <input type="password" formControlName="password" required><br>
-  <button type="submit">Submit</button>
+  <button type="submit" routerLink="/login">Submit</button>
 </form>
 <div *ngIf="message">{{message.message}}</div>
+<button type="submit" routerLink="/login">Login</button>
 

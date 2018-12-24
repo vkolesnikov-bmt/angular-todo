@@ -1,9 +1,7 @@
-import {Todo} from './todo';
-
 export class User {
+  id: number;
   username: string;
   password: string;
-  todos: Todo[];
 
   constructor (username: string, password: string) {
     this.username = username;

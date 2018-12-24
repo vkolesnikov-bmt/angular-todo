@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
 
 import {Todo} from './todo';
 import {Observable, Subject} from 'rxjs';
@@ -8,7 +7,7 @@ import {Observable, Subject} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TodoDataService {
+export class DataService {
 
   public todoArr: Todo[];
 
@@ -17,58 +16,54 @@ export class TodoDataService {
 
   public subjectPagination = new Subject<number[]>();
   public subjectPagination$ = new Observable<number[]>();
-
+  public currentUserId = JSON.parse(localStorage.getItem('currentUserId'));
   private todosOnPage = 10;
+  private urlHost = 'http://localhost:1337';
 
   constructor(private http: HttpClient) {
 
-    this.getTodo();
+    this.getTodo(this.currentUserId);
     this.subjectArr$ = this.subjectArr.asObservable();
     this.subjectPagination$ = this.subjectPagination.asObservable();
   }
 
-  public addTodo(task: string): void {
-    this.todoArr.push(new Todo(task));
-  }
-
-  public deleteAll(): void {
-    this.todoArr = [];
+  public addTodo(task: string): Observable<string> {
+    return this.http.post<string>(`${this.urlHost}/addTodo`, {task: task, currentUserId: this.currentUserId});
   }
 
 
-  getTodo(): void {
-    this.http.get<Todo[]>(`http://localhost:1337/list`)
-      .subscribe(data => {this.todoArr = data; this.subjectArr.next(this.todoArr); });
+  public deleteSingle(idTodo: number): Observable<string> {
+    return this.http.delete<string>(`${this.urlHost}/User/${this.currentUserId}/todo/${idTodo}`);
   }
 
-  public changeStatus(): void {
+  public editTodo(todoEmit: Todo): Observable<string> {
+    return this.http.put<string>(`${this.urlHost}/edit`, todoEmit);
+  }
+
+  public getTodo(userId: number): void {
+    this.http.post<Todo[]>(`${this.urlHost}/list`, {currentUserId: userId})
+      .subscribe(data => {
+        this.todoArr = data;
+        this.subjectArr.next(this.todoArr);
+      });
+  }
+
+  public changeStatus(): Observable<string> {
     const arrFilter = this.todoArr.filter(item => item.status === true);
     if (arrFilter.length === this.todoArr.length) {
-      this.todoArr = this.todoArr.map((item) => {
-        item.status = false;
-        return item;
-      });
+      return this.http.put<string>(`${this.urlHost}/statusAll`, {currentUserId: this.currentUserId, status: false});
     } else {
-      this.todoArr = this.todoArr.map((item) => {
-        item.status = true;
-        return item;
-      });
+      return this.http.put<string>(`${this.urlHost}/statusAll`, {currentUserId: this.currentUserId, status: true});
     }
   }
 
-  public deleteCompleted(): void {
-    this.todoArr = this.todoArr.filter(item => item.status === false);
+  public deleteCompleted(): Observable<string> {
+    return this.http.delete<string>(`${this.urlHost}/User/${this.currentUserId}/completedTodos`);
   }
 
-  public deleteSingle(idTodo: number): void {
-    idTodo = this.todoArr.findIndex(todo => todo.id === idTodo);
-    this.todoArr.splice(idTodo, 1);
-  }
 
-  public editTodo(todoEmit: Todo): void {
-    let indexTodo: number;
-    indexTodo = this.todoArr.findIndex(todo => todo.id === todoEmit.id);
-    this.todoArr[indexTodo] = todoEmit;
+  public deleteAll(): Observable<string> {
+    return this.http.delete<string>(`${this.urlHost}/User/${this.currentUserId}/todos`);
   }
 
   public showList(currentList: number, currentPage: number): void {
@@ -89,7 +84,7 @@ export class TodoDataService {
       }
     }
 
-   // this.updateStorage();
+    // this.updateStorage();
   }
 
   // private updateStorage(): void {

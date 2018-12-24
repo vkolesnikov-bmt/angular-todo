@@ -25,48 +25,70 @@ export class TodoListComponent implements OnInit, DoCheck {
   todoList$: Observable<Todo[]>;
   pagination$: Observable<number[]>;
 
+  private message: string;
+ //  private currentUsername: string;
   constructor(private dataService: TodoDataService) {
     this.todoList$ = this.dataService.subjectArr$;
     this.pagination$ = this.dataService.subjectPagination$;
   }
 
   ngOnInit() {
-    this.dataService.getTodo();
+    this.dataService.getTodo(this.dataService.currentUserId);
     this.dataService.showList(this.currentList, this.currentPage);
+   // this.currentUsername = JSON.parse(localStorage.getItem('currentUsername'));
   }
 
   ngDoCheck() {
-    this.dataService.getTodo();
     this.dataService.showList(this.currentList, this.currentPage);
   }
 
-  public onSubmit(): void {
+  public createTodo(): void {
     if (!this.addForm.value.task.trim()) {
       return;
     }
-    this.dataService.addTodo(this.addForm.value.task);
+    this.dataService.addTodo(this.addForm.value.task).subscribe(data => {
+      this.dataService.getTodo(this.dataService.currentUserId);
+      this.message = data['message'];
+    });
     this.addForm.patchValue({task: ''});
   }
 
-  public deleteAll(): void {
-    this.dataService.deleteAll();
-  }
 
-  public changeStatus(): void {
-    this.dataService.changeStatus();
-  }
-
-  public deleteCompleted(): void {
-    this.dataService.deleteCompleted();
+  public editTodo(todo: Todo): void {
+    this.dataService.editTodo(todo).subscribe(data => {
+      this.dataService.getTodo(this.dataService.currentUserId);
+      this.message = data['message'];
+    });
   }
 
   public deleteTodo(id: number): void {
-    this.dataService.deleteSingle(id);
+    this.dataService.deleteSingle(id).subscribe(data => {
+      this.dataService.getTodo(this.dataService.currentUserId);
+      this.message = data['message'];
+    });
   }
 
-  public editTodo(todo: Todo): void {
-    this.dataService.editTodo(todo);
+  public deleteAll(): void {
+    this.dataService.deleteAll().subscribe(data => {
+      this.dataService.getTodo(this.dataService.currentUserId);
+      this.message = data['message'];
+    });
   }
+
+  public changeStatus(): void {
+    this.dataService.changeStatus().subscribe(data => {
+      this.dataService.getTodo(this.dataService.currentUserId);
+      this.message = data['message'];
+    });
+  }
+
+  public deleteCompleted(): void {
+    this.dataService.deleteCompleted().subscribe(data => {
+      this.dataService.getTodo(this.dataService.currentUserId);
+      this.message = data['message'];
+    });
+  }
+
 
   public showList(currentList: number = this.currentList, currentPage: number = this.currentPage) {
     this.currentList = currentList;
