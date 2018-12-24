@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required)
   });
 
+  successLogin = false;
   showTS = false;
 
   constructor(private signupService: SignupService, private router: Router) {
@@ -36,12 +37,14 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         this.userResponse = data['user'];
         this.messageResponse = data['message'];
-        if (this.userResponse !== undefined) {
+        this.successLogin = data['successLogin'];
+        if (this.successLogin !== false) {
           localStorage.setItem('currentUserId', JSON.stringify(this.userResponse.id));
           this.router.navigate(['/list']);
         }
       });
     this.showTS = true;
+
   }
 
 }
